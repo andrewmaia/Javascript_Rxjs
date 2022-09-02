@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {concat, fromEvent, Observable, of} from 'rxjs';
+import {concat, first, fromEvent, map, Observable, of, throttleTime} from 'rxjs';
 
 @Component({
   selector: 'app-operators',
@@ -31,6 +31,23 @@ export class OperatorsComponent implements OnInit {
     let observableResult = concat(observable1,observable2);
     observableResult.subscribe(x=>alert(`Valor: ${x}`));
   }
+
+  operadorMap(){
+    let observable = of (2,4,5);
+    observable.pipe(map(x=>x*2)).subscribe(x=>alert(`Valor: ${x}`));
+  }
+
+  operadorFirst(){
+    let observable = of (2,4,5);
+    observable.pipe(first()).subscribe(x=>alert(`Valor: ${x}`));
+  }
   
+  operadorThrottleTime(){
+    const clicks = fromEvent(document, 'click');
+    const result = clicks.pipe(throttleTime(5000));
+    result.subscribe(()=>alert(`Ei vc clicou na pagina. Agora essa mensagem só irá aparecer se você clicar depois de 5 segundos`));
+    //Repare que o observable resultante que o throttleTime produz só voltará a emitir o evento click depois de 5 segundos
+    //Qualquer clique feito nesse período será ignorado
+  }
 }
 
