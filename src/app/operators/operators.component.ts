@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {concat, first, fromEvent, map, Observable, of, throttleTime} from 'rxjs';
+import {concat, first, fromEvent, interval, map, Observable, of, takeUntil, throttleTime} from 'rxjs';
 
 @Component({
   selector: 'app-operators',
@@ -11,7 +11,6 @@ export class OperatorsComponent implements OnInit {
 
   
   ngOnInit(): void {
-
   }
 
   operadorOf(){
@@ -20,7 +19,7 @@ export class OperatorsComponent implements OnInit {
   }
 
   operadorFromEvent(){
-    let div = document.getElementById("divFromEvent") as HTMLDivElement;;
+    let div = document.getElementById("divFromEvent") as HTMLDivElement;
     const clicks = fromEvent(div, 'click');
     clicks.subscribe(x => alert(`Você clicou na Div from Event `));
   }
@@ -49,5 +48,14 @@ export class OperatorsComponent implements OnInit {
     //Repare que o observable resultante que o throttleTime produz só voltará a emitir o evento click depois de 5 segundos
     //Qualquer clique feito nesse período será ignorado
   }
+
+  operadorTakeUntil(){
+    let div = document.getElementById("divTakeUntil") as HTMLDivElement;
+    const source = interval(2000);
+    const clicks = fromEvent(div, 'click');
+    const result = source.pipe(takeUntil(clicks));
+    result.subscribe(x => alert(x));
+  }
+
 }
 
