@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {concat, delay, first, fromEvent, interval, map, Observable, of, takeUntil, tap, throttleTime} from 'rxjs';
+import {catchError, concat, delay, first, fromEvent, interval, map, Observable, of, takeUntil, tap, throttleTime} from 'rxjs';
 
 @Component({
   selector: 'app-operators',
@@ -70,6 +70,20 @@ export class OperatorsComponent implements OnInit {
     ).subscribe(x => alert(x));
     //Após se inscrever a emissao dos valores será atrasada em 4 segundos
   }
+
+  operadorCatchError(){
+    of(1,2,3,4).pipe(
+      tap(x => {
+        if (x === 4) 
+          throw 'Não pode ser 4!';
+      }),
+      catchError(err => {
+        alert(err);
+        throw 'error in source. Details: ' + err; //é obrigatório na sixtaxe disparar um novo erro, ou o proprio erro  ou retornar um novo observable
+      })
+      ).subscribe(x => alert(x));
+  }
+
 
 }
 
