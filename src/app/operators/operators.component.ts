@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {concat, first, fromEvent, interval, map, Observable, of, takeUntil, throttleTime} from 'rxjs';
+import {concat, delay, first, fromEvent, interval, map, Observable, of, takeUntil, tap, throttleTime} from 'rxjs';
 
 @Component({
   selector: 'app-operators',
@@ -55,6 +55,20 @@ export class OperatorsComponent implements OnInit {
     const clicks = fromEvent(div, 'click');
     const result = source.pipe(takeUntil(clicks));
     result.subscribe(x => alert(x));
+  }
+
+  operadorTap(){
+    of(0.2,0.6,0.3).pipe(
+      tap(x => alert(x)),
+      map(n => n > 0.5 ? 'big' : 'small')
+    ).subscribe(x => alert(x));
+  }
+
+  operadorDelay(){
+    of(1,2,3).pipe(
+      delay(4000),
+    ).subscribe(x => alert(x));
+    //Após se inscrever a emissao dos valores será atrasada em 4 segundos
   }
 
 }
