@@ -37,8 +37,9 @@ export class ObservableComponent implements OnInit {
       subscriber.next(1);
       subscriber.complete();
     });
-    observable.subscribe(x=>alert(`Assinante 1`));
-    observable.subscribe(x=>alert(`Assinante2`));
+    observable.subscribe(x=>alert(`Assinante 1 ${x}`));
+    observable.subscribe(x=>alert(`Assinante 2 ${x}`));
+  
   }
 
   observableRetornaMaisDeUmValor(){
